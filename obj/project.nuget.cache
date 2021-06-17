@@ -1,11 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "dpkcFoL/ls0vaCiVZ1AaODdb+7Qbzz4ArPTtByA/sXAXhTAgHjUxiPlfG6ThIKarvF2KxF12xE2bcY6MS1JolQ==",
+  "dgSpecHash": "srDqisHwztebS3aqJCjaLgDhBitR9hWEm5aagIylFdWqXkJSw6z97+fsAAma5TFnNFUz2JQr1J7wxYJB9mQqSg==",
   "success": true,
   "projectFilePath": "C:\\Users\\USER\\Source\\Repos\\AuthorAPI\\Author API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\USER\\.nuget\\packages\\automapper\\10.1.1\\automapper.10.1.1.nupkg.sha512",
     "C:\\Users\\USER\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\8.1.1\\automapper.extensions.microsoft.dependencyinjection.8.1.1.nupkg.sha512",
+    "C:\\Users\\USER\\.nuget\\packages\\fluentvalidation\\10.2.3\\fluentvalidation.10.2.3.nupkg.sha512",
+    "C:\\Users\\USER\\.nuget\\packages\\fluentvalidation.aspnetcore\\10.2.3\\fluentvalidation.aspnetcore.10.2.3.nupkg.sha512",
+    "C:\\Users\\USER\\.nuget\\packages\\fluentvalidation.dependencyinjectionextensions\\10.2.3\\fluentvalidation.dependencyinjectionextensions.10.2.3.nupkg.sha512",
     "C:\\Users\\USER\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\USER\\.nuget\\packages\\microsoft.aspnetcore.html.abstractions\\2.2.0\\microsoft.aspnetcore.html.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\USER\\.nuget\\packages\\microsoft.aspnetcore.razor\\2.2.0\\microsoft.aspnetcore.razor.2.2.0.nupkg.sha512",

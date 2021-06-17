@@ -27,31 +27,37 @@ namespace Author_API.Controllers
             return Authors;
         }
 
-        [HttpGet("{AuthorId}")]
-        public AuthorResource GetAuthorById(int AuthorId)
+        [HttpGet("{Id}")]
+        public AuthorResource GetAuthorById(int Id)
         {
-            var Author = _repository.GetAuthor(AuthorId).AsResource();
+            var Author = _repository.GetAuthor(Id).AsResource();
             return Author;
         }
 
         [HttpPost]
         public ActionResult<AuthorResource> CreateAuthor(AuthorModel Model)
         {
+            if (Model.Email == "" && Model.PhoneNumber == "")
+            {
+                return BadRequest();
+            }
+            
             Author Author = new()
             {
-                AuthorId=new(),
+                Id=new(),
                 Name = Model.Name,
                 Email = Model.Email,
-                DateOfBirth = Model.DateOfBirth
-            };
+                DateOfBirth = Model.DateOfBirth,
+                PhoneNumber=Model.PhoneNumber,
+        };
             _repository.CreateAuthor(Author);
-            return CreatedAtAction(nameof(GetAuthorById), new { AuthorId = Author.AuthorId }, Author.AsResource());
+            return CreatedAtAction(nameof(GetAuthorById), new { Id = Author.Id }, Author.AsResource());
         }
 
-        [HttpPut("{AuthorId}")]
-        public ActionResult UpdateAuthor(int AuthorId, AuthorModel Model)
+        [HttpPut("{Id}")]
+        public ActionResult UpdateAuthor(int Id, AuthorModel Model)
         {
-            var exsistingAuthor = _repository.GetAuthor(AuthorId);
+            var exsistingAuthor = _repository.GetAuthor(Id);
 
             if (exsistingAuthor is null)
             {
@@ -60,14 +66,16 @@ namespace Author_API.Controllers
             exsistingAuthor.Name = Model.Name;
             exsistingAuthor.Email = Model.Email;
             exsistingAuthor.DateOfBirth = Model.DateOfBirth;
+            exsistingAuthor.PhoneNumber = Model.PhoneNumber;
+
             _repository.UpdateAuthor(exsistingAuthor);
             return NoContent();
         }
 
-        [HttpDelete("{AuthorId}")]
-        public ActionResult DeleteAuthor(int AuthorId)
+        [HttpDelete("{Id}")]
+        public ActionResult DeleteAuthor(int Id)
         {
-            var exsistingAuthor = _repository.GetAuthor(AuthorId);
+            var exsistingAuthor = _repository.GetAuthor(Id);
 
             if (exsistingAuthor is null)
             {

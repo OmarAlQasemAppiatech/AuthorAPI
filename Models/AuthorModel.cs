@@ -12,7 +12,6 @@ namespace Author_API.Entities
         [Required]
         public string Name { get; set; }
 
-        [Required]
         [RegularExpression(@"^[^@\s]+@[^@\s]+\.[^@\s]+$")]
         public string Email { get; set; }
 
@@ -20,5 +19,8 @@ namespace Author_API.Entities
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
         [DataType(DataType.Date)]
         public DateTime DateOfBirth { get; set; }
+
+        [RegularExpression(@"^[0-9]{1,10}$", ErrorMessage = "Phone Number Must Only Include Numbers and Be 10 Digits At Most!")]
+        public string PhoneNumber { get; set; }
     }
 }

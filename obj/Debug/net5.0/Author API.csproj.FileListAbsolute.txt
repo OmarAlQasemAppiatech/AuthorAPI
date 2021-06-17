@@ -314,3 +314,6 @@ C:\Users\USER\Source\Repos\AuthorAPI\obj\Debug\net5.0\Author API.dll
 C:\Users\USER\Source\Repos\AuthorAPI\obj\Debug\net5.0\ref\Author API.dll
 C:\Users\USER\Source\Repos\AuthorAPI\obj\Debug\net5.0\Author API.pdb
 C:\Users\USER\Source\Repos\AuthorAPI\obj\Debug\net5.0\Author API.genruntimeconfig.cache
+C:\Users\USER\Source\Repos\AuthorAPI\bin\Debug\net5.0\FluentValidation.dll
+C:\Users\USER\Source\Repos\AuthorAPI\bin\Debug\net5.0\FluentValidation.AspNetCore.dll
+C:\Users\USER\Source\Repos\AuthorAPI\bin\Debug\net5.0\FluentValidation.DependencyInjectionExtensions.dll

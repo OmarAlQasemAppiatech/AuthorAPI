@@ -13,10 +13,12 @@ namespace Author_API
         {
             return new AuthorResource
             {
-                AuthorId = Author.AuthorId,
+                Id = Author.Id,
                 Name = Author.Name,
                 Email = Author.Email,
-                DateOfBirth = Author.DateOfBirth
+                DateOfBirth = Author.DateOfBirth,
+                PhoneNumber = Author.PhoneNumber,
+                Age= DateTime.Now.Year - Author.DateOfBirth.Year
             };
         }
     }

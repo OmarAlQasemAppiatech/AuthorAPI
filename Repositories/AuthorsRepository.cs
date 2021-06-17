@@ -21,7 +21,7 @@ namespace Author_API.Repositories
         }
         public Author GetAuthor(int AuthorId)
         {
-            return _context.Authors.ToList().SingleOrDefault(Author => Author.AuthorId == AuthorId);
+            return _context.Authors.ToList().SingleOrDefault(Author => Author.Id == AuthorId);
         }
 
         public void CreateAuthor(Author Author)
