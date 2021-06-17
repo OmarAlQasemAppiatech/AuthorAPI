@@ -6,15 +6,17 @@ using System.Threading.Tasks;
 
 namespace Author_API.Dtos
 {
-    public record UpdateAuthorDto
+    public class AuthorResource
     {
+        [Key]
+        public int AuthorId { get; init; }
+
         [Required]
         public string Name { get; set; }
 
-        [Required]
+        [RegularExpression(@"^[^@\s]+@[^@\s]+\.[^@\s]+$")]
         public string Email { get; set; }
 
-        [Required]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
         [DataType(DataType.Date)]
         public DateTime DateOfBirth { get; set; }

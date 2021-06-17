@@ -11,7 +11,7 @@ namespace Author_API.Controllers
 {
     [ApiController]
     [Route("Authors")]
-    public class AuthorController : Controller
+    public class AuthorController : ControllerBase
     {
         private readonly IAuthorsRepository _repository;
 
@@ -21,35 +21,35 @@ namespace Author_API.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<AuthorDto> GetAuthors()
+        public IEnumerable<AuthorResource> GetAuthors()
         {
-            var Authors = _repository.GetAuthors().Select(Author => Author.AsDto());
+            var Authors = _repository.GetAuthors().Select(Author => Author.AsResource());
             return Authors;
         }
 
         [HttpGet("{AuthorId}")]
-        public AuthorDto GetAuthorById(int AuthorId)
+        public AuthorResource GetAuthorById(int AuthorId)
         {
-            var Author = _repository.GetAuthor(AuthorId).AsDto();
+            var Author = _repository.GetAuthor(AuthorId).AsResource();
             return Author;
         }
 
         [HttpPost]
-        public ActionResult<AuthorDto> CreateAuthor(CreateAuthorDto AuthorDto)
+        public ActionResult<AuthorResource> CreateAuthor(AuthorModel Model)
         {
             Author Author = new()
             {
                 AuthorId=new(),
-                Name = AuthorDto.Name,
-                Email = AuthorDto.Email,
-                DateOfBirth = AuthorDto.DateOfBirth
+                Name = Model.Name,
+                Email = Model.Email,
+                DateOfBirth = Model.DateOfBirth
             };
             _repository.CreateAuthor(Author);
-            return CreatedAtAction(nameof(GetAuthorById), new { AuthorId = Author.AuthorId }, Author.AsDto());
+            return CreatedAtAction(nameof(GetAuthorById), new { AuthorId = Author.AuthorId }, Author.AsResource());
         }
 
         [HttpPut("{AuthorId}")]
-        public ActionResult UpdateAuthor(int AuthorId, UpdateAuthorDto AuthorDto)
+        public ActionResult UpdateAuthor(int AuthorId, AuthorModel Model)
         {
             var exsistingAuthor = _repository.GetAuthor(AuthorId);
 
@@ -57,9 +57,9 @@ namespace Author_API.Controllers
             {
                 return NotFound();
             }
-            exsistingAuthor.Name = AuthorDto.Name;
-            exsistingAuthor.Email = AuthorDto.Email;
-            exsistingAuthor.DateOfBirth = AuthorDto.DateOfBirth;
+            exsistingAuthor.Name = Model.Name;
+            exsistingAuthor.Email = Model.Email;
+            exsistingAuthor.DateOfBirth = Model.DateOfBirth;
             _repository.UpdateAuthor(exsistingAuthor);
             return NoContent();
         }

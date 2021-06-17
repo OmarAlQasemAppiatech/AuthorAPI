@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
-namespace Author_API.Dtos
+namespace Author_API.Entities
 {
-    public record CreateAuthorDto
+    public class AuthorModel
     {
         [Required]
         public string Name { get; set; }
