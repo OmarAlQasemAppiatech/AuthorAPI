@@ -35,7 +35,7 @@ namespace Author_API.Controllers
 
             if (Author is null)
             {
-                return NotFound();
+                return NotFound("There is No Users With Such Id");
             }
 
             return Ok(Author.AsResource());
@@ -57,7 +57,7 @@ namespace Author_API.Controllers
                 await _repository.CreateAsync(Author);
                 return CreatedAtAction(nameof(GetByIdAsync), new { Id = Author.Id }, Author.AsResource());
             }
-            return BadRequest();
+            return BadRequest("Either Email Or Phone Number Must Be Provided");
         }
 
         [HttpPut("{Id}")]
@@ -81,7 +81,7 @@ namespace Author_API.Controllers
                 await _repository.UpdateAsync(exsistingAuthor);
                 return NoContent();
             }
-            return BadRequest();
+            return BadRequest("Either Email Or Phone Number Must Be Provided");
         }
 
         [HttpDelete("{Id}")]
