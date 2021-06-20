@@ -9,15 +9,15 @@ namespace Author_API.Repositories
 {
         public interface IAuthorsRepository
     {
-        Task <Author> GetAuthorAsync(int AuthorId);
+        Task <Author> GetByIdAsync(int AuthorId);
 
-        Task<IEnumerable<Author>> GetAuthorsAsync();
+        Task<IEnumerable<Author>> GetAsync();
 
-        Task CreateAuthorAsync(Author Author);
+        Task CreateAsync(Author Author);
 
-        Task UpdateAuthorAsync(Author Author);
+        Task UpdateAsync(Author Author);
 
-        Task DeleteAuthorAsync(Author author);
+        Task DeleteAsync(Author author);
 
     }
     public class AuthorsRepository : IAuthorsRepository
@@ -29,30 +29,30 @@ namespace Author_API.Repositories
             _context = context;
         }
 
-        public async Task <IEnumerable<Author>> GetAuthorsAsync()
+        public async Task <IEnumerable<Author>> GetAsync()
         {
             return await _context.Authors.ToListAsync();
         }
 
-        public async Task <Author> GetAuthorAsync(int AuthorId)
+        public async Task <Author> GetByIdAsync(int AuthorId)
         {
              var Authors= await _context.Authors.ToListAsync();
             return Authors.FirstOrDefault(Author => Author.Id == AuthorId);
         }
 
-        public async Task CreateAuthorAsync(Author Author)
+        public async Task CreateAsync(Author Author)
         {
             await _context.Authors.AddAsync(Author);
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateAuthorAsync(Author author)
+        public async Task UpdateAsync(Author author)
         {
             _context.Authors.Update(author);
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAuthorAsync(Author author)
+        public async Task DeleteAsync(Author author)
         {
             _context.Remove(author);
             await _context.SaveChangesAsync();

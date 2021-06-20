@@ -15,75 +15,92 @@ namespace Author_API.Controllers
     {
         private readonly IAuthorsRepository _repository;
 
+
         public AuthorController(IAuthorsRepository repository)
         {
             _repository = repository;
         }
 
-        [HttpGet]
-        public async Task <IEnumerable<AuthorResource>> GetAuthorsAsync()
+    [HttpGet]
+        public async Task<ActionResult<List<AuthorResource>>> GetAsync()
         {
-            var Authors = (await _repository.GetAuthorsAsync()).Select(Author => Author.AsResource());
-            return Authors;
+            var Authors = (await _repository.GetAsync()).Select(Author => Author.AsResource());
+            return Ok(Authors);
         }
 
         [HttpGet("{Id}")]
-        public async Task <AuthorResource> GetAuthorByIdAsync(int Id)
+        public async Task<ActionResult<AuthorResource>> GetByIdAsync(int Id)
         {
-            var Author = await _repository.GetAuthorAsync(Id);
-            return Author.AsResource();
+            var Author = await _repository.GetByIdAsync(Id);
+
+            if (Author is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(Author.AsResource());
         }
 
         [HttpPost]
-        public async Task <ActionResult<AuthorResource>> CreateAuthorAsync(AuthorModel Model)
+        public async Task <ActionResult<AuthorResource>> CreateAsync(AuthorModel Model)
         {
-            if (Model.Email == "" && Model.PhoneNumber == "")
+            if (Validate(Model))
             {
-                return BadRequest();
+                Author Author = new()
+                {
+                    Id = new(),
+                    Name = Model.Name,
+                    Email = Model.Email,
+                    DateOfBirth = Model.DateOfBirth,
+                    PhoneNumber = Model.PhoneNumber,
+                };
+                await _repository.CreateAsync(Author);
+                return CreatedAtAction(nameof(GetByIdAsync), new { Id = Author.Id }, Author.AsResource());
             }
-            
-            Author Author = new()
-            {
-                Id=new(),
-                Name = Model.Name,
-                Email = Model.Email,
-                DateOfBirth = Model.DateOfBirth,
-                PhoneNumber=Model.PhoneNumber,
-        };
-             await _repository.CreateAuthorAsync(Author);
-            return CreatedAtAction(nameof(GetAuthorByIdAsync), new { Id = Author.Id }, Author.AsResource());
+            return BadRequest();
         }
 
         [HttpPut("{Id}")]
-        public async Task <ActionResult> UpdateAuthorAsync(int Id, AuthorModel Model)
+        public async Task <ActionResult> UpdateAsync(int Id, AuthorModel Model)
         {
-            var exsistingAuthor = await _repository.GetAuthorAsync(Id);
+            var exsistingAuthor = await _repository.GetByIdAsync(Id);
 
             if (exsistingAuthor is null)
             {
                 return NotFound();
             }
-            exsistingAuthor.Name = Model.Name;
-            exsistingAuthor.Email = Model.Email;
-            exsistingAuthor.DateOfBirth = Model.DateOfBirth;
-            exsistingAuthor.PhoneNumber = Model.PhoneNumber;
 
-            await _repository.UpdateAuthorAsync(exsistingAuthor);
-            return NoContent();
+            if (Validate(Model))
+            {
+
+                exsistingAuthor.Name = Model.Name;
+                exsistingAuthor.Email = Model.Email;
+                exsistingAuthor.DateOfBirth = Model.DateOfBirth;
+                exsistingAuthor.PhoneNumber = Model.PhoneNumber;
+
+                await _repository.UpdateAsync(exsistingAuthor);
+                return NoContent();
+            }
+            return BadRequest();
         }
 
         [HttpDelete("{Id}")]
-        public async Task <ActionResult> DeleteAuthorAsync(int Id)
+        public async Task <ActionResult> DeleteAsync(int Id)
         {
-            var exsistingAuthor = await _repository.GetAuthorAsync(Id);
+            var exsistingAuthor = await _repository.GetByIdAsync(Id);
 
             if (exsistingAuthor is null)
             {
                 return NotFound();
             }
 
-             await _repository.DeleteAuthorAsync(exsistingAuthor);
+             await _repository.DeleteAsync(exsistingAuthor);
             return NoContent();
+        }
+        private bool Validate(AuthorModel Model)
+        {
+
+            return !(String.IsNullOrEmpty(Model.Email) && String.IsNullOrEmpty(Model.PhoneNumber));
         }
     }
 }

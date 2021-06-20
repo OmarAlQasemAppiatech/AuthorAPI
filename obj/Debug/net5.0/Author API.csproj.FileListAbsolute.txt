@@ -317,3 +317,10 @@ C:\Users\USER\Source\Repos\AuthorAPI\obj\Debug\net5.0\Author API.genruntimeconfi
 C:\Users\USER\Source\Repos\AuthorAPI\bin\Debug\net5.0\FluentValidation.dll
 C:\Users\USER\Source\Repos\AuthorAPI\bin\Debug\net5.0\FluentValidation.AspNetCore.dll
 C:\Users\USER\Source\Repos\AuthorAPI\bin\Debug\net5.0\FluentValidation.DependencyInjectionExtensions.dll
+C:\Users\USER\source\repos\AuthorAPI\bin\Debug\net5.0\System.Web.Mvc.dll
+C:\Users\USER\source\repos\AuthorAPI\bin\Debug\net5.0\System.Web.Razor.dll
+C:\Users\USER\source\repos\AuthorAPI\bin\Debug\net5.0\System.Web.Helpers.dll
+C:\Users\USER\source\repos\AuthorAPI\bin\Debug\net5.0\System.Web.WebPages.Deployment.dll
+C:\Users\USER\source\repos\AuthorAPI\bin\Debug\net5.0\System.Web.WebPages.Razor.dll
+C:\Users\USER\source\repos\AuthorAPI\bin\Debug\net5.0\System.Web.WebPages.dll
+C:\Users\USER\source\repos\AuthorAPI\bin\Debug\net5.0\Microsoft.Web.Infrastructure.dll
