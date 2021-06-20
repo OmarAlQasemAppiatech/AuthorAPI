@@ -12,7 +12,7 @@ namespace Author_API.Entities
         [Required]
         public string Name { get; set; }
 
-        [RegularExpression(@"^[^@\s]+@[^@\s]+\.[^@\s]+$")]
+        [RegularExpression(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", ErrorMessage = "Email Should be in a valid format, e.g. Sample@mail.com")]
         public string Email { get; set; }
 
         [Required]

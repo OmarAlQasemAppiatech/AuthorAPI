@@ -13,7 +13,7 @@ namespace Author_API.Dtos
 
         public string Name { get; set; }
 
-        [RegularExpression(@"^[^@\s]+@[^@\s]+\.[^@\s]+$")]
+        [RegularExpression(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", ErrorMessage = "Email Should be in a valid format, e.g. Sample@mail.com")]
         public string Email { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]

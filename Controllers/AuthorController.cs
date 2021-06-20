@@ -21,21 +21,21 @@ namespace Author_API.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<AuthorResource> GetAuthors()
+        public async Task <IEnumerable<AuthorResource>> GetAuthorsAsync()
         {
-            var Authors = _repository.GetAuthors().Select(Author => Author.AsResource());
+            var Authors = (await _repository.GetAuthorsAsync()).Select(Author => Author.AsResource());
             return Authors;
         }
 
         [HttpGet("{Id}")]
-        public AuthorResource GetAuthorById(int Id)
+        public async Task <AuthorResource> GetAuthorByIdAsync(int Id)
         {
-            var Author = _repository.GetAuthor(Id).AsResource();
-            return Author;
+            var Author = await _repository.GetAuthorAsync(Id);
+            return Author.AsResource();
         }
 
         [HttpPost]
-        public ActionResult<AuthorResource> CreateAuthor(AuthorModel Model)
+        public async Task <ActionResult<AuthorResource>> CreateAuthorAsync(AuthorModel Model)
         {
             if (Model.Email == "" && Model.PhoneNumber == "")
             {
@@ -50,14 +50,14 @@ namespace Author_API.Controllers
                 DateOfBirth = Model.DateOfBirth,
                 PhoneNumber=Model.PhoneNumber,
         };
-            _repository.CreateAuthor(Author);
-            return CreatedAtAction(nameof(GetAuthorById), new { Id = Author.Id }, Author.AsResource());
+             await _repository.CreateAuthorAsync(Author);
+            return CreatedAtAction(nameof(GetAuthorByIdAsync), new { Id = Author.Id }, Author.AsResource());
         }
 
         [HttpPut("{Id}")]
-        public ActionResult UpdateAuthor(int Id, AuthorModel Model)
+        public async Task <ActionResult> UpdateAuthorAsync(int Id, AuthorModel Model)
         {
-            var exsistingAuthor = _repository.GetAuthor(Id);
+            var exsistingAuthor = await _repository.GetAuthorAsync(Id);
 
             if (exsistingAuthor is null)
             {
@@ -68,21 +68,21 @@ namespace Author_API.Controllers
             exsistingAuthor.DateOfBirth = Model.DateOfBirth;
             exsistingAuthor.PhoneNumber = Model.PhoneNumber;
 
-            _repository.UpdateAuthor(exsistingAuthor);
+            await _repository.UpdateAuthorAsync(exsistingAuthor);
             return NoContent();
         }
 
         [HttpDelete("{Id}")]
-        public ActionResult DeleteAuthor(int Id)
+        public async Task <ActionResult> DeleteAuthorAsync(int Id)
         {
-            var exsistingAuthor = _repository.GetAuthor(Id);
+            var exsistingAuthor = await _repository.GetAuthorAsync(Id);
 
             if (exsistingAuthor is null)
             {
                 return NotFound();
             }
 
-            _repository.DeleteAuthor(exsistingAuthor);
+             await _repository.DeleteAuthorAsync(exsistingAuthor);
             return NoContent();
         }
     }

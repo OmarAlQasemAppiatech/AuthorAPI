@@ -30,7 +30,10 @@ namespace Author_API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAutoMapper(typeof(Startup));
-            services.AddControllers();
+            _ = services.AddControllers(options =>
+              {
+                  options.SuppressAsyncSuffixInActionNames = false;
+              });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Author_API", Version = "v1" });
