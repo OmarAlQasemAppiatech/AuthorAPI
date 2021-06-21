@@ -9,9 +9,9 @@ namespace Author_API.Repositories
 {
         public interface IAuthorsRepository
     {
-        Task <Author> GetByIdAsync(int AuthorId);
-
         Task<IEnumerable<Author>> GetAsync();
+
+        Task<Author> GetByIdAsync(int AuthorId);
 
         Task CreateAsync(Author Author);
 

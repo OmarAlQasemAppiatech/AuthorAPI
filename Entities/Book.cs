@@ -24,8 +24,10 @@ namespace Author_API.Entities
         [Required]
         public int NumberOfPages { get; set; }
 
+        [Required]
         public ICollection<Author> Authors { get; set; }
 
+        [Required]
         public Publisher Publisher { get; set; }
 
     }

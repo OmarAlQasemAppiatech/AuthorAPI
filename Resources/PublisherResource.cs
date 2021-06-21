@@ -26,7 +26,7 @@ namespace Author_API.Resources
         [RegularExpression(@"^[0-9]{1,10}$", ErrorMessage = "Phone Number Must Only Include Numbers and Be 10 Digits At Most!")]
         public string PhoneNumber { get; set; }
 
-        public ICollection<AuthorBookResource> Books { get; set; }
+        public ICollection<PublisherBookResource> Books { get; set; }
 
     }
 }

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Author_API.Controllers
 {
     [ApiController]
-    [Route("Authors")]
+    [Route("api/[controller]")]
     public class AuthorController : ControllerBase
     {
         private readonly IAuthorsRepository _repository;
@@ -53,6 +53,7 @@ namespace Author_API.Controllers
                     Email = Model.Email,
                     DateOfBirth = Model.DateOfBirth,
                     PhoneNumber = Model.PhoneNumber,
+                    Books = Model.
                 };
                 await _repository.CreateAsync(Author);
                 return CreatedAtAction(nameof(GetByIdAsync), new { Id = Author.Id }, Author.AsResource());

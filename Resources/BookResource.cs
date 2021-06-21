@@ -21,7 +21,7 @@ namespace Author_API.Resources
 
         public int NumberOfPages { get; set; }
 
-        public Publisher Publisher { get; set; }
+        public PublisherResource Publisher { get; set; }
 
         public ICollection<AuthorResource> Authors { get; set; }
 

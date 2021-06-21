@@ -39,6 +39,9 @@ namespace Author_API
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Author_API", Version = "v1" });
             });
             services.AddScoped<IAuthorsRepository, AuthorsRepository>();
+            services.AddScoped<IBooksRepository, BooksRepository>();
+            services.AddScoped<IPublishersRepository, PublishersRepository>();
+
             services.AddDbContext<AuthorsDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("AuthorsDbConnectionString")));
         }
 
