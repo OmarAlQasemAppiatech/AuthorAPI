@@ -7919,6 +7919,7 @@
       "AutoMapper.Extensions.Microsoft.DependencyInjection >= 8.1.1",
       "FluentValidation.AspNetCore >= 10.2.3",
       "Microsoft.AspNet.Mvc >= 5.2.7",
+      "Microsoft.EntityFrameworkCore >= 5.0.7",
       "Microsoft.EntityFrameworkCore.SqlServer >= 5.0.7",
       "Microsoft.EntityFrameworkCore.Sqlite >= 5.0.7",
       "Microsoft.EntityFrameworkCore.Tools >= 5.0.7",
@@ -7976,6 +7977,10 @@
           "Microsoft.AspNet.Mvc": {
             "target": "Package",
             "version": "[5.2.7, )"
+          },
+          "Microsoft.EntityFrameworkCore": {
+            "target": "Package",
+            "version": "[5.0.7, )"
           },
           "Microsoft.EntityFrameworkCore.SqlServer": {
             "target": "Package",

@@ -99,7 +99,6 @@ namespace Author_API.Controllers
         }
         private bool Validate(AuthorModel Model)
         {
-
             return !(String.IsNullOrEmpty(Model.Email) && String.IsNullOrEmpty(Model.PhoneNumber));
         }
     }
