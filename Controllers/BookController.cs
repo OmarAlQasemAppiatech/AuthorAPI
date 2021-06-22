@@ -1,5 +1,6 @@
 ﻿using Author_API.Entities;
 using Author_API.Models;
+using Author_API.Paging;
 using Author_API.Repositories;
 using Author_API.Resources;
 using Microsoft.AspNetCore.Http;
@@ -27,7 +28,7 @@ namespace Author_API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<BookResource>>> GetAsync()
+        public async Task<ActionResult<List<BookResource>>> GetAsync(PagingParameters pagingParameters)
         {
             var Books = await _bookRepository.GetAsync();
             return Ok(Books.Select(Book => Book.BookAsResource()));
@@ -49,7 +50,8 @@ namespace Author_API.Controllers
         [HttpPost]
         public async Task<ActionResult<BookResource>> CreateAsync(BookModel Model)
         {
-            var AllAuthors = await _Authorsrepository.GetAsync();
+            PagingParameters pagingParameters = new  PagingParameters();
+            var AllAuthors = await _Authorsrepository.GetAsync(pagingParameters);
             var Authors = AllAuthors.Where(item => Model.AuthorsIds.Contains(item.Id)).ToList();
 
             var Publisher = await _publishersRepository.GetByIdAsync(Model.PublisherId);
@@ -69,7 +71,8 @@ namespace Author_API.Controllers
         [HttpPut("{Id}")]
         public async Task<ActionResult> UpdateAsync(int Id, BookModel Model)
         {
-            var authors = await _Authorsrepository.GetAsync();
+            PagingParameters pagingParameters = new PagingParameters();
+            var authors = await _Authorsrepository.GetAsync(pagingParameters);
             var Authors = authors.Where(item => Model.AuthorsIds.Contains(item.Id)).ToList();
 
             var Publisher = await _publishersRepository.GetByIdAsync(Model.PublisherId);

@@ -1,5 +1,6 @@
 ﻿using Author_API.Dtos;
 using Author_API.Entities;
+using Author_API.Paging;
 using Author_API.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -26,9 +27,9 @@ namespace Author_API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<AuthorResource>>> GetAsync()
+        public async Task<ActionResult<IEnumerable<AuthorResource>>> GetAsync([FromQuery] PagingParameters pagingParameters )
         {
-            var Authors = (await _repository.GetAsync()).Select(Author => Author.AsResource());
+            var Authors = (await _repository.GetAsync(pagingParameters)).Select(Author => Author.AsResource());
             return Ok(Authors);
         }
 
@@ -104,7 +105,7 @@ namespace Author_API.Controllers
              await _repository.DeleteAsync(exsistingAuthor);
             return NoContent();
         }
-        private bool Validate(AuthorModel Model)
+        private static bool Validate(AuthorModel Model)
         {
             return !(String.IsNullOrEmpty(Model.Email) && String.IsNullOrEmpty(Model.PhoneNumber));
         }

@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
+using Author_API.Paging;
 
 namespace Author_API.Repositories
 {
         public interface IAuthorsRepository
     {
-        Task<IEnumerable<Author>> GetAsync();
+        Task<PagedList<Author>> GetAsync(PagingParameters pagingParameters);
 
         Task<Author> GetByIdAsync(int AuthorId);
 
@@ -29,9 +30,10 @@ namespace Author_API.Repositories
             _context = context;
         }
 
-        public async Task <IEnumerable<Author>> GetAsync()
+        public async Task <PagedList<Author>> GetAsync(PagingParameters pagingParameters)
         {
-            return await _context.Authors.Include(x=>x.Books).ToListAsync();
+            var result = await  _context.Authors.Include(x => x.Books).ToListAsync();
+            return await Task.FromResult(PagedList<Author>.GetPagedList(result, pagingParameters.PageNumber, pagingParameters.PageSize));
         }
 
         public async Task <Author> GetByIdAsync(int AuthorId)
