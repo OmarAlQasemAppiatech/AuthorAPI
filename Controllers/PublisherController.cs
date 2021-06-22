@@ -47,16 +47,17 @@ namespace Author_API.Controllers
         [HttpPost]
         public async Task<ActionResult<PublisherResource>> CreateAsync(PublisherModel Model)
         {
-            var AllBooks = _bookRepository.GetAsync();
+            var AllBooks = await _bookRepository.GetAsync();
             Publisher Publisher = new()
-                {
-                    Id = new(),
-                    Name = Model.Name,
-                    Email = Model.Email,
-                    Address = Model.Address,
-                    PhoneNumber = Model.PhoneNumber,
-                    Books = AllBooks..Where(item => Model.AuthorsIds.Contains(item.Id)).ToList(),
-                };
+            {
+                Id = new(),
+                Name = Model.Name,
+                Email = Model.Email,
+                Address = Model.Address,
+                PhoneNumber = Model.PhoneNumber,
+            };
+            Publisher.Books = AllBooks.Where(x => x.Publisher.Id == Publisher.Id).ToList();
+
                 await _publisherRepository.CreateAsync(Publisher);
                 return CreatedAtAction(nameof(GetByIdAsync), new { Id = Publisher.Id }, Publisher.PublisherAsResource());
         }

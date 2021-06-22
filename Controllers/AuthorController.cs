@@ -14,14 +14,18 @@ namespace Author_API.Controllers
     public class AuthorController : ControllerBase
     {
         private readonly IAuthorsRepository _repository;
+        private readonly IBooksRepository _bookRepository;
 
 
-        public AuthorController(IAuthorsRepository repository)
+
+        public AuthorController(IAuthorsRepository repository, IBooksRepository booksRepository)
         {
             _repository = repository;
+            _bookRepository = booksRepository;
+
         }
 
-    [HttpGet]
+        [HttpGet]
         public async Task<ActionResult<List<AuthorResource>>> GetAsync()
         {
             var Authors = (await _repository.GetAsync()).Select(Author => Author.AsResource());
@@ -44,6 +48,7 @@ namespace Author_API.Controllers
         [HttpPost]
         public async Task <ActionResult<AuthorResource>> CreateAsync(AuthorModel Model)
         {
+            var AllBooks = await _bookRepository.GetAsync();
             if (Validate(Model))
             {
                 Author Author = new()
@@ -52,10 +57,11 @@ namespace Author_API.Controllers
                     Name = Model.Name,
                     Email = Model.Email,
                     DateOfBirth = Model.DateOfBirth,
-                    PhoneNumber = Model.PhoneNumber,
-                    Books = Model.
+                    PhoneNumber = Model.PhoneNumber
                 };
+                Author.Books = AllBooks.Where(x => x.Authors.Contains(Author)).ToList();
                 await _repository.CreateAsync(Author);
+
                 return CreatedAtAction(nameof(GetByIdAsync), new { Id = Author.Id }, Author.AsResource());
             }
             return BadRequest("Either Email Or Phone Number Must Be Provided");

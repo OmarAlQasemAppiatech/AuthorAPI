@@ -31,10 +31,12 @@ namespace Author_API.Repositories
 
             public async Task<IEnumerable<Publisher>> GetAsync()
             {
-                return await _context.Publishers.ToListAsync();
-            }
+            //return await _context.Publishers.ToListAsync();
+            return await _context.Publishers.Include(x => x.Books).ToListAsync();
 
-            public async Task<Publisher> GetByIdAsync(int PublisherId)
+        }
+
+        public async Task<Publisher> GetByIdAsync(int PublisherId)
             {
                 var Publishers = await _context.Publishers.ToListAsync();
                 return Publishers.FirstOrDefault(Publisher => Publisher.Id == PublisherId);

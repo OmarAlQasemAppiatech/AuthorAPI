@@ -31,7 +31,7 @@ namespace Author_API.Repositories
 
         public async Task <IEnumerable<Author>> GetAsync()
         {
-            return await _context.Authors.ToListAsync();
+            return await _context.Authors.Include(x=>x.Books).ToListAsync();
         }
 
         public async Task <Author> GetByIdAsync(int AuthorId)

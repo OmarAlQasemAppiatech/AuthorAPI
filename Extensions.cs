@@ -20,7 +20,8 @@ namespace Author_API
                 Email = Author.Email,
                 DateOfBirth = Author.DateOfBirth,
                 PhoneNumber = Author.PhoneNumber,
-                Age= DateTime.Now.Year - Author.DateOfBirth.Year
+                Age= DateTime.Now.Year - Author.DateOfBirth.Year,
+                Books = Author.Books.Select(x=>x.AuthorBookAsResource()).ToList(),
             };
         }
         public static PublisherResource PublisherAsResource(this Publisher Publisher)
@@ -43,8 +44,8 @@ namespace Author_API
                 Title = Book.Title,
                 DateOfPublish = Book.DateOfPublish,
                 NumberOfPages = Book.NumberOfPages,
-                Publisher = Book.Publisher?.PublisherAsResource(),
-                Authors=Book.Authors?.Select(x => x.AsResource()).ToList(),
+                Publisher = Book.Publisher?.BookPublisherAsResource(),
+                Authors=Book.Authors?.Select(x => x.BookAuthorAsResource()).ToList(),
             };
         }
 
@@ -62,6 +63,22 @@ namespace Author_API
             {
                 Id = Book.Id,
                 Title = Book.Title,
+            };
+        }
+        public static BookAuthorResource BookAuthorAsResource(this Author author)
+        {
+            return new BookAuthorResource
+            {
+                Id = author.Id,
+                Name = author.Name,
+            };
+        }
+        public static BookPublisherResource BookPublisherAsResource(this Publisher publisher)
+        {
+            return new BookPublisherResource
+            {
+                Id = publisher.Id,
+                Name = publisher.Name,
             };
         }
     }
