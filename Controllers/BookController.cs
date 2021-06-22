@@ -28,7 +28,7 @@ namespace Author_API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<BookResource>>> GetAsync(PagingParameters pagingParameters)
+        public async Task<ActionResult<List<BookResource>>> GetAsync()
         {
             var Books = await _bookRepository.GetAsync();
             return Ok(Books.Select(Book => Book.BookAsResource()));
