@@ -44,9 +44,9 @@ namespace Author_API.Repositories
 
         public async Task<PagedList<Book>> GetAsync(PagingParameters pagingParameters)
         {
-            var result = await _context.Books.Include(x => x.Publisher).Include(x => x.Authors).ToListAsync();
+            var result = _context.Books.Include(x => x.Publisher).Include(x => x.Authors).Where(x => x.Title.StartsWith(pagingParameters.SearchName));
 
-            var searchResult = result.Where(x => x.Title.StartsWith(pagingParameters.SearchName)).OrderBy(x => x.Title);
+            var searchResult = await result.OrderBy(x => x.Title).ToListAsync();
 
             return await Task.FromResult(PagedList<Book>.GetPagedList(searchResult, pagingParameters.PageNumber, pagingParameters.PageSize));
         }
