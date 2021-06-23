@@ -1,4 +1,5 @@
 ﻿using Author_API.Entities;
+using Author_API.Paging;
 using Author_API.Resources;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -12,7 +13,7 @@ namespace Author_API.Repositories
     {
         Task<Book> GetByIdAsync(int BookId);
 
-        Task<IEnumerable<Book>> GetAsync();
+        Task<PagedList<Book>> GetAsync(PagingParameters pagingParameters);
 
         Task CreateAsync(Book Book);
 
@@ -41,9 +42,13 @@ namespace Author_API.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Book>> GetAsync()
+        public async Task<PagedList<Book>> GetAsync(PagingParameters pagingParameters)
         {
-            return await _context.Books.Include(x => x.Publisher).Include(x=>x.Authors).ToListAsync();
+            var result = await _context.Books.Include(x => x.Publisher).Include(x => x.Authors).ToListAsync();
+
+            var searchResult = result.Where(x => x.Title.StartsWith(pagingParameters.SearchName)).OrderBy(x => x.Title);
+
+            return await Task.FromResult(PagedList<Book>.GetPagedList(searchResult, pagingParameters.PageNumber, pagingParameters.PageSize));
         }
 
         public async Task<Book> GetByIdAsync(int BookId)

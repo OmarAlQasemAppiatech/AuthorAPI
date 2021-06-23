@@ -28,10 +28,14 @@ namespace Author_API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<BookResource>>> GetAsync()
+        public async Task<ActionResult<IEnumerable<BookResource>>> GetAsync([FromQuery] PagingParameters pagingParameters)
         {
-            var Books = await _bookRepository.GetAsync();
-            return Ok(Books.Select(Book => Book.BookAsResource()));
+            if (pagingParameters.SearchName.Any(char.IsDigit))
+            {
+                return BadRequest("Name Shouln't Contain Numerics!");
+            }
+            var Books = await _bookRepository.GetAsync(pagingParameters);
+            return Ok(Books.Select(Book => Book.BookAsResource()).OrderBy(x => x.Id));
         }
 
         [HttpGet("{Id}")]

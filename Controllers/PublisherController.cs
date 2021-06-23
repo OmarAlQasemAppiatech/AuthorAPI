@@ -1,5 +1,6 @@
 ﻿using Author_API.Entities;
 using Author_API.Models;
+using Author_API.Paging;
 using Author_API.Repositories;
 using Author_API.Resources;
 using Microsoft.AspNetCore.Http;
@@ -25,9 +26,13 @@ namespace Author_API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<PublisherResource>>> GetAsync()
+        public async Task<ActionResult<IEnumerable<PublisherResource>>> GetAsync([FromQuery] PagingParameters pagingParameters)
         {
-            var Publishers = (await _publisherRepository.GetAsync()).Select(Publisher => Publisher.PublisherAsResource());
+            if (pagingParameters.SearchName.Any(char.IsDigit))
+            {
+                return BadRequest("Name Shouln't Contain Numerics!");
+            }
+            var Publishers = (await _publisherRepository.GetAsync(pagingParameters)).Select(Publisher => Publisher.PublisherAsResource()).OrderBy(x => x.Id);
             return Ok(Publishers);
         }
 
@@ -47,7 +52,8 @@ namespace Author_API.Controllers
         [HttpPost]
         public async Task<ActionResult<PublisherResource>> CreateAsync(PublisherModel Model)
         {
-            var AllBooks = await _bookRepository.GetAsync();
+            PagingParameters pagingParameters = new PagingParameters();
+            var AllBooks = await _bookRepository.GetAsync(pagingParameters);
             Publisher Publisher = new()
             {
                 Id = new(),

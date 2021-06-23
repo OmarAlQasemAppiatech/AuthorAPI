@@ -7933,11 +7933,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\USER\\source\\repos\\AuthorAPI\\Author API.csproj",
+      "projectUniqueName": "C:\\Users\\USER\\Source\\Repos\\AuthorAPI\\Author API.csproj",
       "projectName": "Author API",
-      "projectPath": "C:\\Users\\USER\\source\\repos\\AuthorAPI\\Author API.csproj",
+      "projectPath": "C:\\Users\\USER\\Source\\Repos\\AuthorAPI\\Author API.csproj",
       "packagesPath": "C:\\Users\\USER\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\USER\\source\\repos\\AuthorAPI\\obj\\",
+      "outputPath": "C:\\Users\\USER\\Source\\Repos\\AuthorAPI\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\USER\\AppData\\Roaming\\NuGet\\NuGet.Config",

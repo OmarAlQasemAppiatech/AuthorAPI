@@ -53,7 +53,8 @@ namespace Author_API.Controllers
         [HttpPost]
         public async Task <ActionResult<AuthorResource>> CreateAsync(AuthorModel Model)
         {
-            var AllBooks = await _bookRepository.GetAsync();
+            PagingParameters pagingParameters = new PagingParameters();
+            var AllBooks = await _bookRepository.GetAsync(pagingParameters);
             if (Validate(Model))
             {
                 Author Author = new()
