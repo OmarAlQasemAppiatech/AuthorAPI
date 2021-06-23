@@ -21,5 +21,6 @@ namespace Author_API.Paging
                 _pageSize = (value > maxPageSize) ? maxPageSize : value;
             }
         }
+        public string SearchName { get; set; } = "";
     }
 }

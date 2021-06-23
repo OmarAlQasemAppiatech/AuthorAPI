@@ -29,7 +29,11 @@ namespace Author_API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AuthorResource>>> GetAsync([FromQuery] PagingParameters pagingParameters )
         {
-            var Authors = (await _repository.GetAsync(pagingParameters)).Select(Author => Author.AsResource());
+            if (pagingParameters.SearchName.Any(char.IsDigit))
+            {
+                return BadRequest("Name Shouln't Contain Numerics!");
+            }
+            var Authors = (await _repository.GetAsync(pagingParameters)).Select(Author => Author.AsResource()).OrderBy(x=>x.Id);
             return Ok(Authors);
         }
 

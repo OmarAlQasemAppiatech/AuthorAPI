@@ -16,7 +16,7 @@ namespace Author_API.Entities
         [Required]
         public string Name { get; set; }
 
-        [RegularExpression(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", ErrorMessage = "Email Should be in a valid format, e.g. Sample@mail.com")]
+        [RegularExpression(@"^[^@\s]+@[^@\s]+\.[^@\s]+$")]
         public string Email { get; set; }
 
         [Required]
@@ -24,7 +24,7 @@ namespace Author_API.Entities
         [DataType(DataType.Date)]
         public DateTime DateOfBirth { get; set; }
 
-        [RegularExpression(@"^[0-9]{1,10}$", ErrorMessage = "Phone Number Must Only Include Numbers and Be 10 Digits At Most!")]
+        [RegularExpression(@"^[0-9]{1,10}$")]
         public string PhoneNumber { get; set; }
 
         public ICollection<Book> Books { get; set; }

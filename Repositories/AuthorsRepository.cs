@@ -33,7 +33,10 @@ namespace Author_API.Repositories
         public async Task <PagedList<Author>> GetAsync(PagingParameters pagingParameters)
         {
             var result = await  _context.Authors.Include(x => x.Books).ToListAsync();
-            return await Task.FromResult(PagedList<Author>.GetPagedList(result, pagingParameters.PageNumber, pagingParameters.PageSize));
+
+            var searchResult = result.Where(x => x.Name.StartsWith(pagingParameters.SearchName)).OrderBy(x => x.Name);
+
+            return await Task.FromResult(PagedList<Author>.GetPagedList(searchResult, pagingParameters.PageNumber, pagingParameters.PageSize));
         }
 
         public async Task <Author> GetByIdAsync(int AuthorId)

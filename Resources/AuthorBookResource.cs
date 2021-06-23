@@ -8,7 +8,6 @@ namespace Author_API.Resources
 {
     public class AuthorBookResource
     {
-        [Key]
         public int Id { get; set; }
 
         public string Title { get; set; }

@@ -17,14 +17,14 @@ namespace Author_API.Entities
         public string Name { get; set; }
 
         [Required]
-        [RegularExpression(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", ErrorMessage = "Email Should be in a valid format, e.g. Sample@mail.com")]
+        [RegularExpression(@"^[^@\s]+@[^@\s]+\.[^@\s]+$")]
         public string Email { get; set; }
 
         [Required]
         public string Address { get; set; }
 
         [Required]
-        [RegularExpression(@"^[0-9]{1,10}$", ErrorMessage = "Phone Number Must Only Include Numbers and Be 10 Digits At Most!")]
+        [RegularExpression(@"^[0-9]{1,10}$")]
         public string PhoneNumber { get; set; }
 
         public ICollection<Book> Books { get; set; }
