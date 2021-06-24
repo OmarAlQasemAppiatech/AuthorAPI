@@ -3,6 +3,8 @@ using Author_API.Models;
 using Author_API.Paging;
 using Author_API.Repositories;
 using Author_API.Resources;
+using BussinessAccessLayer.Managers;
+using Contract;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -16,15 +18,12 @@ namespace Author_API.Controllers
     [ApiController]
     public class BookController : ControllerBase
     {
-        private readonly IBooksRepository _bookRepository;
-        private readonly IAuthorsRepository _Authorsrepository;
-        private readonly IPublishersRepository _publishersRepository;
+        private readonly BookManager _bookManager;
 
-        public BookController(IBooksRepository bookRepository , IAuthorsRepository authorsRepository, IPublishersRepository publishersRepository)
+
+        public BookController(BookManager bookManager)
         {
-            _bookRepository = bookRepository;
-            _Authorsrepository = authorsRepository;
-            _publishersRepository = publishersRepository;
+            _bookManager = bookManager;
         }
 
         [HttpGet]
@@ -32,88 +31,58 @@ namespace Author_API.Controllers
         {
             if (pagingParameters.SearchName.Any(char.IsDigit))
             {
-                return BadRequest("Name Shouln't Contain Numerics!");
+                return BadRequest("Title Shouln't Contain Numerics!");
             }
-            var Books = await _bookRepository.GetAsync(pagingParameters);
-            return Ok(Books.Select(Book => Book.BookAsResource()).OrderBy(x => x.Id));
+            var result = await _bookManager.GetAsync(pagingParameters);
+            return Ok(result);
         }
 
         [HttpGet("{Id}")]
         public async Task<ActionResult<BookResource>> GetByIdAsync(int Id)
         {
-            var Book = await _bookRepository.GetByIdAsync(Id);
-
-            if (Book is null)
+            var result = await _bookManager.GetByIdAsync(Id);
+            if (result is null)
             {
                 return NotFound("There is No Books With Such Id");
             }
-
-            return Ok(Book.BookAsResource());
+            return Ok(result);
         }
 
         [HttpPost]
         public async Task<ActionResult<BookResource>> CreateAsync(BookModel Model)
         {
-            PagingParameters pagingParameters = new  PagingParameters();
-            var AllAuthors = await _Authorsrepository.GetAsync(pagingParameters);
-            var Authors = AllAuthors.Where(item => Model.AuthorsIds.Contains(item.Id)).ToList();
-
-            var Publisher = await _publishersRepository.GetByIdAsync(Model.PublisherId);
-            Book Book = new()
-            {
-                Id = new(),
-                Title = Model.Title,
-                DateOfPublish = Model.DateOfPublish,
-                NumberOfPages = Model.NumberOfPages,
-                Publisher = Publisher,
-                Authors = Authors
-            };
-            await _bookRepository.CreateAsync(Book);
-            return CreatedAtAction(nameof(GetByIdAsync), new { Id = Book.Id }, Book.BookAsResource());
+            var result = await _bookManager.CreateAsync(Model);
+            return Ok(result);
         }
 
         [HttpPut("{Id}")]
         public async Task<ActionResult> UpdateAsync(int Id, BookModel Model)
         {
             PagingParameters pagingParameters = new PagingParameters();
-            var authors = await _Authorsrepository.GetAsync(pagingParameters);
-            var Authors = authors.Where(item => Model.AuthorsIds.Contains(item.Id)).ToList();
 
-            var Publisher = await _publishersRepository.GetByIdAsync(Model.PublisherId);
 
-            var exsistingBook = await _bookRepository.GetByIdAsync(Id);
+            var exsistingBook = await _bookManager.GetByIdAsync(Id);
 
             if (exsistingBook is null)
             {
                 return NotFound();
             }
 
-            {
-
-                exsistingBook.Title = Model.Title;
-                exsistingBook.DateOfPublish = Model.DateOfPublish;
-                exsistingBook.NumberOfPages = Model.NumberOfPages;
-                exsistingBook.Publisher = Publisher;
-                exsistingBook.Authors = Authors;
-
-
-                await _bookRepository.UpdateAsync(exsistingBook);
-                return NoContent();
-
-            }
+            await _bookManager.UpdateAsync(Id, Model);
+            return Ok();
         }
         [HttpDelete("{Id}")]
         public async Task<ActionResult> DeleteAsync(int Id)
         {
-            var exsistingBook = await _bookRepository.GetByIdAsync(Id);
+            var exsistingBook = await _bookManager.GetByIdAsync(Id);
 
             if (exsistingBook is null)
             {
                 return NotFound();
             }
 
-            await _bookRepository.DeleteAsync(exsistingBook);
-            return NoContent();
+            await _bookManager.DeleteAsync(Id);
+            return Ok();
         }
     }
 }

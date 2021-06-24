@@ -2,6 +2,8 @@
 using Author_API.Entities;
 using Author_API.Paging;
 using Author_API.Repositories;
+using BussinessAccessLayer;
+using BussinessAccessLayer.Managers;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -14,69 +16,54 @@ namespace Author_API.Controllers
     [Route("api/[controller]")]
     public class AuthorController : ControllerBase
     {
-        private readonly IAuthorsRepository _repository;
-        private readonly IBooksRepository _bookRepository;
+
+        private readonly AuthorManager _authorManager;
 
 
-
-        public AuthorController(IAuthorsRepository repository, IBooksRepository booksRepository)
+        public AuthorController(AuthorManager authorManager)
         {
-            _repository = repository;
-            _bookRepository = booksRepository;
-
+            _authorManager = authorManager;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AuthorResource>>> GetAsync([FromQuery] PagingParameters pagingParameters )
+        public async Task<ActionResult<IEnumerable<AuthorResource>>> GetAsync([FromQuery] PagingParameters pagingParameters)
         {
             if (pagingParameters.SearchName.Any(char.IsDigit))
             {
                 return BadRequest("Name Shouln't Contain Numerics!");
             }
-            var Authors = (await _repository.GetAsync(pagingParameters)).Select(Author => Author.AsResource()).OrderBy(x=>x.Id);
-            return Ok(Authors);
-        }
 
+            var result = await _authorManager.GetAsync(pagingParameters);
+            return Ok(result);
+        }
+    
         [HttpGet("{Id}")]
         public async Task<ActionResult<AuthorResource>> GetByIdAsync(int Id)
         {
-            var Author = await _repository.GetByIdAsync(Id);
-
-            if (Author is null)
+            var result = await _authorManager.GetByIdAsync(Id);
+            if (result is null)
             {
-                return NotFound("There is No Users With Such Id");
+                return NotFound("There is No Authors With Such Id");
             }
-
-            return Ok(Author.AsResource());
+            return Ok(result);
         }
 
         [HttpPost]
         public async Task <ActionResult<AuthorResource>> CreateAsync(AuthorModel Model)
         {
-            PagingParameters pagingParameters = new PagingParameters();
-            var AllBooks = await _bookRepository.GetAsync(pagingParameters);
+
             if (Validate(Model))
             {
-                Author Author = new()
-                {
-                    Id = new(),
-                    Name = Model.Name,
-                    Email = Model.Email,
-                    DateOfBirth = Model.DateOfBirth,
-                    PhoneNumber = Model.PhoneNumber
-                };
-                Author.Books = AllBooks.Where(x => x.Authors.Contains(Author)).ToList();
-                await _repository.CreateAsync(Author);
-
-                return CreatedAtAction(nameof(GetByIdAsync), new { Id = Author.Id }, Author.AsResource());
-            }
+                var result = await _authorManager.CreateAsync(Model);
+                 return Ok(result);
+            };
             return BadRequest("Either Email Or Phone Number Must Be Provided");
         }
 
         [HttpPut("{Id}")]
         public async Task <ActionResult> UpdateAsync(int Id, AuthorModel Model)
         {
-            var exsistingAuthor = await _repository.GetByIdAsync(Id);
+            var exsistingAuthor = await _authorManager.GetByIdAsync(Id);
 
             if (exsistingAuthor is null)
             {
@@ -85,30 +72,24 @@ namespace Author_API.Controllers
 
             if (Validate(Model))
             {
-
-                exsistingAuthor.Name = Model.Name;
-                exsistingAuthor.Email = Model.Email;
-                exsistingAuthor.DateOfBirth = Model.DateOfBirth;
-                exsistingAuthor.PhoneNumber = Model.PhoneNumber;
-
-                await _repository.UpdateAsync(exsistingAuthor);
-                return NoContent();
+                await _authorManager.UpdateAsync(Id,Model);
+                return Ok();
             }
             return BadRequest("Either Email Or Phone Number Must Be Provided");
         }
 
         [HttpDelete("{Id}")]
-        public async Task <ActionResult> DeleteAsync(int Id)
+        public async Task<ActionResult> DeleteAsync(int Id)
         {
-            var exsistingAuthor = await _repository.GetByIdAsync(Id);
+            var exsistingAuthor = await _authorManager.GetByIdAsync(Id);
 
             if (exsistingAuthor is null)
             {
                 return NotFound();
             }
 
-             await _repository.DeleteAsync(exsistingAuthor);
-            return NoContent();
+            await _authorManager.DeleteAsync(Id);
+            return Ok();
         }
         private static bool Validate(AuthorModel Model)
         {

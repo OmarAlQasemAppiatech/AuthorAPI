@@ -14,6 +14,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BussinessAccessLayer.Managers;
+using System.Text.Json.Serialization;
 
 namespace Author_API
 {
@@ -41,6 +43,10 @@ namespace Author_API
             services.AddScoped<IAuthorsRepository, AuthorsRepository>();
             services.AddScoped<IBooksRepository, BooksRepository>();
             services.AddScoped<IPublishersRepository, PublishersRepository>();
+            services.AddScoped<AuthorManager, AuthorManager>();
+            services.AddScoped<BookManager, BookManager>();
+            services.AddScoped<PublisherManager, PublisherManager>();
+
 
             services.AddDbContext<AuthorsDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("AuthorsDbConnectionString")));
         }
