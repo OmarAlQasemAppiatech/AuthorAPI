@@ -29,10 +29,6 @@ namespace Author_API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<BookResource>>> GetAsync([FromQuery] PagingParameters pagingParameters)
         {
-            if (pagingParameters.SearchName.Any(char.IsDigit))
-            {
-                return BadRequest("Title Shouln't Contain Numerics!");
-            }
             var result = await _bookManager.GetAsync(pagingParameters);
             return Ok(result);
         }
@@ -41,10 +37,6 @@ namespace Author_API.Controllers
         public async Task<ActionResult<BookResource>> GetByIdAsync(int Id)
         {
             var result = await _bookManager.GetByIdAsync(Id);
-            if (result is null)
-            {
-                return NotFound("There is No Books With Such Id");
-            }
             return Ok(result);
         }
 
@@ -58,29 +50,13 @@ namespace Author_API.Controllers
         [HttpPut("{Id}")]
         public async Task<ActionResult> UpdateAsync(int Id, BookModel Model)
         {
-            PagingParameters pagingParameters = new PagingParameters();
-
-
-            var exsistingBook = await _bookManager.GetByIdAsync(Id);
-
-            if (exsistingBook is null)
-            {
-                return NotFound();
-            }
-
             await _bookManager.UpdateAsync(Id, Model);
             return Ok();
         }
+
         [HttpDelete("{Id}")]
         public async Task<ActionResult> DeleteAsync(int Id)
         {
-            var exsistingBook = await _bookManager.GetByIdAsync(Id);
-
-            if (exsistingBook is null)
-            {
-                return NotFound();
-            }
-
             await _bookManager.DeleteAsync(Id);
             return Ok();
         }

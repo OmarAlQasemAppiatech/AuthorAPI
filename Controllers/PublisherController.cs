@@ -27,10 +27,6 @@ namespace Author_API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PublisherResource>>> GetAsync([FromQuery] PagingParameters pagingParameters)
         {
-            if (pagingParameters.SearchName.Any(char.IsDigit))
-            {
-                return BadRequest("Name Shouln't Contain Numerics!");
-            }
             var result = await _publisherManager.GetAsync(pagingParameters);
             return Ok(result);
         }
@@ -39,12 +35,6 @@ namespace Author_API.Controllers
         public async Task<ActionResult<PublisherResource>> GetByIdAsync(int Id)
         {
             var result = await _publisherManager.GetByIdAsync(Id);
-
-            if (result is null)
-            {
-                return NotFound("There is No Publisher With Such Id");
-            }
-
             return Ok(result);
         }
 
@@ -58,12 +48,6 @@ namespace Author_API.Controllers
         [HttpPut("{Id}")]
         public async Task<ActionResult> UpdateAsync(int Id, PublisherModel Model)
         {
-            var exsistingPublisher = await _publisherManager.GetByIdAsync(Id);
-
-            if (exsistingPublisher is null)
-            {
-                return NotFound();
-            }
             await _publisherManager.UpdateAsync(Id, Model);
             return Ok();
         }
@@ -71,13 +55,6 @@ namespace Author_API.Controllers
         [HttpDelete("{Id}")]
         public async Task<ActionResult> DeleteAsync(int Id)
         {
-            var exsistingPublisher = await _publisherManager.GetByIdAsync(Id);
-
-            if (exsistingPublisher is null)
-            {
-                return NotFound();
-            }
-
             await _publisherManager.DeleteAsync(Id);
             return Ok();
         }
