@@ -16,6 +16,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BussinessAccessLayer.Managers;
 using System.Text.Json.Serialization;
+using BussinessAccessLayer;
 
 namespace Author_API
 {
@@ -64,6 +65,8 @@ namespace Author_API
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseMiddleware<ErrorHandlingMiddleware>();
 
             app.UseAuthorization();
 
