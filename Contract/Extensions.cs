@@ -1,0 +1,67 @@
+﻿using Author_API.Dtos;
+using Author_API.Entities;
+using Author_API.Resources;
+using Contract.Resources;
+using DataAccessLayer.Entities;
+using System;
+using System.Linq;
+
+namespace Contract
+{
+    public static class Extensions
+    {
+        public static AuthorResource AsResource(this Author Author)
+        {
+            return new AuthorResource
+            {
+                Id = Author.Id,
+                Name = Author.Name,
+                Email = Author.Email,
+                DateOfBirth = Author.DateOfBirth,
+                PhoneNumber = Author.PhoneNumber,
+                Age= DateTime.Now.Year - Author.DateOfBirth.Year,
+                //Books = Author.Books.Select(x=>x.AuthorBookAsResource()).ToList(),
+            };
+        }
+        public static PublisherResource PublisherAsResource(this Publisher Publisher)
+        {
+            return new PublisherResource
+            {
+                Id = Publisher.Id,
+                Name = Publisher.Name,
+                Address = Publisher.Address,
+                Email =Publisher.Email,
+                PhoneNumber=Publisher.PhoneNumber,
+                //Books=Publisher.Books?.Select(x=>x.PublisherBookAsResource()).ToList()
+            };
+        }
+        public static BookResource BookAsResource(this Book Book)
+        {
+            return new BookResource
+            {
+                Id = Book.Id,
+                Title = Book.Title,
+                DateOfPublish = Book.DateOfPublish,
+                NumberOfPages = Book.NumberOfPages,
+                Publisher = Book.Publisher?.BookPublisherAsResource(),
+                Authors = Book.Authors?.Select(x => x.BookAuthorAsResource()).ToList(),
+            };
+        }
+        public static BookAuthorResource BookAuthorAsResource(this Author author)
+        {
+            return new BookAuthorResource
+            {
+                Id = author.Id,
+                Name = author.Name,
+            };
+        }
+        public static BookPublisherResource BookPublisherAsResource(this Publisher publisher)
+        {
+            return new BookPublisherResource
+            {
+                Id = publisher.Id,
+                Name = publisher.Name,
+            };
+        }
+    }
+}

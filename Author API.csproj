@@ -27,9 +27,4 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.4" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\BussinessAccessLayer\BussinessAccessLayer.csproj" />
-    <ProjectReference Include="..\Contract\Contract.csproj" />
-  </ItemGroup>
-
 </Project>

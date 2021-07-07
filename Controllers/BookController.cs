@@ -5,6 +5,8 @@ using Author_API.Repositories;
 using Author_API.Resources;
 using BussinessAccessLayer.Managers;
 using Contract;
+using Contract.Models;
+using Contract.Resources;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
