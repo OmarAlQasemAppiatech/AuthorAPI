@@ -4,6 +4,7 @@ using Author_API.Paging;
 using Author_API.Repositories;
 using Author_API.Resources;
 using Contract;
+using DataAccessLayer.Repositories;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,12 +15,12 @@ namespace BussinessAccessLayer.Managers
     public class PublisherManager
     {
         private readonly IPublishersRepository _publisherRepository;
-        //private readonly IBooksRepository _bookRepository;
+        private readonly IBooksRepository _bookRepository;
 
-        public PublisherManager(IPublishersRepository publisherRepository)
+        public PublisherManager(IPublishersRepository publisherRepository, IBooksRepository bookRepository)
         {
             _publisherRepository = publisherRepository;
-            //_bookRepository = bookRepository;
+            _bookRepository = bookRepository;
         }
 
         //Get All Publishers
@@ -48,7 +49,7 @@ namespace BussinessAccessLayer.Managers
         public async Task<PublisherResource> CreateAsync(PublisherModel Model)
         {
             PagingParameters pagingParameters = new PagingParameters();
-            //var AllBooks = await _bookRepository.GetAsync(pagingParameters);
+            var AllBooks = await _bookRepository.GetAsync(pagingParameters);
             Publisher Publisher = new()
             {
                 Id = new(),
@@ -57,7 +58,7 @@ namespace BussinessAccessLayer.Managers
                 Address = Model.Address,
                 PhoneNumber = Model.PhoneNumber,
             };
-            //Publisher.Books = AllBooks.Where(x => x.Publisher.Id == Publisher.Id).ToList();
+            Publisher.Books = AllBooks.Where(x => x.Publisher.Id == Publisher.Id).ToList();
 
             await _publisherRepository.CreateAsync(Publisher);
             return Publisher.PublisherAsResource();

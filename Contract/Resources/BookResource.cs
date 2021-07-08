@@ -12,7 +12,6 @@ namespace Contract.Resources
 
         public string Title { get; set; }
 
-        [DisplayFormat(DataFormatString = "{yyyy-MM-dd}")]
         public DateTime DateOfPublish { get; set; }
 
         public int NumberOfPages { get; set; }

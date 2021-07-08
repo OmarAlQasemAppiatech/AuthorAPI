@@ -54,7 +54,7 @@ namespace BussinessAccessLayer.Managers
             return Book.BookAsResource();
         }
 
-        //Create Author
+        //Create Book
         public async Task<BookResource> CreateAsync(BookModel Model)
         {
             PagingParameters pagingParameters = new();
@@ -76,7 +76,7 @@ namespace BussinessAccessLayer.Managers
             return Book.BookAsResource();
         }
 
-        //Update Author
+        //Update Book
         public async Task UpdateAsync(int Id, BookModel Model)
         {
             PagingParameters pagingParameters = new();
@@ -104,7 +104,7 @@ namespace BussinessAccessLayer.Managers
             }
         }
 
-        //Delete Author
+        //Delete Book
         public async Task DeleteAsync(int Id)
         {
             {

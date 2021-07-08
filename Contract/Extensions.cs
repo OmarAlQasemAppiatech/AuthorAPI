@@ -20,7 +20,7 @@ namespace Contract
                 DateOfBirth = Author.DateOfBirth,
                 PhoneNumber = Author.PhoneNumber,
                 Age= DateTime.Now.Year - Author.DateOfBirth.Year,
-                //Books = Author.Books.Select(x=>x.AuthorBookAsResource()).ToList(),
+                Books = Author.Books.Select(x=>x.AuthorBookAsResource()).ToList(),
             };
         }
         public static PublisherResource PublisherAsResource(this Publisher Publisher)
@@ -32,7 +32,7 @@ namespace Contract
                 Address = Publisher.Address,
                 Email =Publisher.Email,
                 PhoneNumber=Publisher.PhoneNumber,
-                //Books=Publisher.Books?.Select(x=>x.PublisherBookAsResource()).ToList()
+                Books=Publisher.Books?.Select(x=>x.PublisherBookAsResource()).ToList()
             };
         }
         public static BookResource BookAsResource(this Book Book)
@@ -61,6 +61,22 @@ namespace Contract
             {
                 Id = publisher.Id,
                 Name = publisher.Name,
+            };
+        }
+        public static AuthorBookResource AuthorBookAsResource(this Book Book)
+        {
+            return new AuthorBookResource
+            {
+                Id = Book.Id,
+                Title = Book.Title,
+            };
+        }
+        public static PublisherBookResource PublisherBookAsResource(this Book Book)
+        {
+            return new PublisherBookResource
+            {
+                Id = Book.Id,
+                Title = Book.Title,
             };
         }
     }

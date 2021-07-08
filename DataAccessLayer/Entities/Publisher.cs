@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using DataAccessLayer.Entities;
 
 namespace Author_API.Entities
 {
@@ -27,5 +28,6 @@ namespace Author_API.Entities
         [RegularExpression(@"^[0-9]{1,10}$")]
         public string PhoneNumber { get; set; }
 
+        public ICollection<Book> Books { get; set; }
     }
 }

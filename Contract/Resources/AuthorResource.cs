@@ -1,5 +1,6 @@
 ﻿using Author_API.Entities;
 using Author_API.Resources;
+using Contract.Resources;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -22,5 +23,7 @@ namespace Author_API.Dtos
         public string PhoneNumber { get; set; }
 
         public int Age { get; set; }
+        public ICollection<AuthorBookResource> Books { get; set; }
+
     }
 }

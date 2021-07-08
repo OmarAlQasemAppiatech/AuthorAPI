@@ -8,7 +8,7 @@ using Author_API.Paging;
 
 namespace Author_API.Repositories
 {
-        public interface IAuthorsRepository
+    public interface IAuthorsRepository
     {
         Task<PagedList<Author>> GetAsync(PagingParameters pagingParameters);
 
@@ -30,18 +30,18 @@ namespace Author_API.Repositories
             _context = context;
         }
 
-        public async Task <PagedList<Author>> GetAsync(PagingParameters pagingParameters)
+        public async Task<PagedList<Author>> GetAsync(PagingParameters pagingParameters)
         {
-            var result = _context.Authors.Where(x => x.Name.StartsWith(pagingParameters.SearchName));
+            var result = _context.Authors.Include(x => x.Books).Where(x => x.Name.StartsWith(pagingParameters.SearchName));
 
             var searchResult = await result.OrderBy(x => x.Name).ToListAsync();
 
             return await Task.FromResult(PagedList<Author>.GetPagedList(searchResult, pagingParameters.PageNumber, pagingParameters.PageSize));
         }
 
-        public async Task <Author> GetByIdAsync(int AuthorId)
+        public async Task<Author> GetByIdAsync(int AuthorId)
         {
-             var Authors= await _context.Authors.ToListAsync();
+            var Authors = await _context.Authors.ToListAsync();
             return Authors.FirstOrDefault(Author => Author.Id == AuthorId);
         }
 

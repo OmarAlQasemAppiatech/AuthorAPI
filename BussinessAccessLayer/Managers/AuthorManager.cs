@@ -3,6 +3,7 @@ using Author_API.Entities;
 using Author_API.Paging;
 using Author_API.Repositories;
 using Contract;
+using DataAccessLayer.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,14 +15,14 @@ namespace BussinessAccessLayer.Managers
     public class AuthorManager
     {
         private readonly IAuthorsRepository _repository;
-        //private readonly IBooksRepository _bookRepository;
+        private readonly IBooksRepository _bookRepository;
 
 
 
-        public AuthorManager(IAuthorsRepository repository)
+        public AuthorManager(IAuthorsRepository repository , IBooksRepository booksRepository)
         {
             _repository = repository;
-            //_bookRepository = booksRepository;
+            _bookRepository = booksRepository;
 
         }
 
@@ -51,7 +52,7 @@ namespace BussinessAccessLayer.Managers
         public async Task<AuthorResource> CreateAsync(AuthorModel Model)
         {
             PagingParameters pagingParameters = new PagingParameters();
-            //var AllBooks = await _bookRepository.GetAsync(pagingParameters);
+            var AllBooks = await _bookRepository.GetAsync(pagingParameters);
             if (Validate(Model))
             {
                 Author Author = new()
@@ -62,7 +63,7 @@ namespace BussinessAccessLayer.Managers
                     DateOfBirth = Model.DateOfBirth,
                     PhoneNumber = Model.PhoneNumber
                 };
-                //Author.Books = AllBooks.Where(x => x.Authors.Contains(Author)).ToList();
+                Author.Books = AllBooks.Where(x => x.Authors.Contains(Author)).ToList();
                 await _repository.CreateAsync(Author);
                 return Author.AsResource();
             }
